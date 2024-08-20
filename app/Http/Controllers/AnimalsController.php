@@ -12,7 +12,14 @@ class AnimalsController extends Controller
     {
         $animals = Animal::all();
 
-        return Inertia::render('Welcome', [
+        return Inertia::render('HomePage', [
+            'animals' => $animals
+        ]);
+    }
+    public function filterByOwner() : Response {
+        $animals = Animal::all();
+
+        return Inertia::render('HomePage', [
             'animals' => $animals
         ]);
     }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Types\AnimalType;
 use App\Types\AnimalStatus;
-use App\Types\OwnerNames;
+
 
 class Animal extends Model
 {
@@ -20,6 +20,7 @@ class Animal extends Model
         'price',
         'description',
         'status',
+        'owner_id',
     ];
 
     protected $casts = [
@@ -28,4 +29,9 @@ class Animal extends Model
         'price' => 'float',
         'status' =>  AnimalStatus::class,
     ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 }

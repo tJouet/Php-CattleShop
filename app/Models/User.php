@@ -46,4 +46,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function animals()
+    {
+        return $this->hasMany(Animal::class, 'owner_id');
+    }
 }
