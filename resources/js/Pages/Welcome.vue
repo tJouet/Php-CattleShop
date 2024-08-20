@@ -6,6 +6,7 @@ defineProps<{
     canRegister?: boolean;
     laravelVersion: string;
     phpVersion: string;
+    animals: Array<{ id:number,name: string, age: number, type: string, race: string, price: number, description: string, status: string, owner: string }>;
 }>();
 
 function handleImageError() {
@@ -14,6 +15,7 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+
 </script>
 
 <template>
@@ -56,7 +58,12 @@ function handleImageError() {
                 </header>
 
                 <main class="mt-6">
-
+                    <h2 class="text-xl font-bold">Animals List</h2>
+                    <ul>
+                        <li v-for="animal in animals" :key="animal.id">
+                            <strong>{{ animal.name }}</strong> - {{ animal.type }} - {{ animal.race }} - Age: {{ animal.age }} - Price: ${{ animal.price }} - Owner: {{ animal.owner }}
+                        </li>
+                    </ul>
                 </main>
 
                 <footer class="py-16 text-center text-sm text-black dark:text-white/70">

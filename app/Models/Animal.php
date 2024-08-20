@@ -10,6 +10,7 @@ use App\Types\OwnerNames;
 
 class Animal extends Model
 {
+    protected $table = 'animals';
     use HasFactory;
     protected $fillable = [
         'name',
