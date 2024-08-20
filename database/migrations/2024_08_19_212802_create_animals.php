@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('status', ['sold', 'available']);
             $table->timestamps();
+            $table ->string('owner', ['jeanmichel','arnaud','francoise']);
         });
     }
 

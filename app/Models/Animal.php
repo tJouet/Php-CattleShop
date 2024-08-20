@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Types\AnimalType;
 use App\Types\AnimalStatus;
+use App\Types\OwnerNames;
 
 class Animal extends Model
 {
@@ -25,5 +26,6 @@ class Animal extends Model
         'type' => AnimalType::class,
         'price' => 'float',
         'status' =>  AnimalStatus::class,
+        'owner' => OwnerNames::class
     ];
 }
