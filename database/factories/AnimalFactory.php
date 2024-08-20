@@ -29,7 +29,6 @@ class AnimalFactory extends Factory
             'price' => $this->faker->randomFloat(2, 10, 500),
             'description' => $this->faker->sentence,
             'status' => $this->faker->randomElement(AnimalStatus::cases()),
-            'owner' => $this->faker->randomElement(OwnerNames::cases()),
         ];
     }
 }

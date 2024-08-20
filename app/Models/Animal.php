@@ -27,6 +27,5 @@ class Animal extends Model
         'type' => AnimalType::class,
         'price' => 'float',
         'status' =>  AnimalStatus::class,
-        'owner' => OwnerNames::class
     ];
 }
