@@ -17,4 +17,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route::get('/dashboard/{animalId}', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard.details');
+
+
+// Route::patch('/dashboard/{animalId}', function () {
+//     // todo: update
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::delete('/dashboard/{animalId}', function () {
+//     // todo: delete
+// })->middleware(['auth', 'verified'])->name('dashboard');
 require __DIR__.'/auth.php';

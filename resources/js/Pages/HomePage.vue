@@ -1,8 +1,8 @@
 <template>
     <Head title="HomePage" />
+
     <Header :canLogin="true" />
     <div class="flex flex-col items-center justify-center">
-        <!-- START MAIN -->
         <main class="w-full px-6">
             <div
                 class="bg-red-300 rounded-md mt-6 justify-between items-center flex md:flex-row p-4 flex-col w-full"
@@ -52,7 +52,7 @@
                     {{ animal.race }} - Age: {{ animal.age }} - Price: ${{
                         animal.price
                     }}
-                    - Owner: {{ animal.owner.name }}
+                    - Owner: {{ animal.owner.name }} {{ animal.owner.phone }}
                 </li>
             </ul>
         </main>
@@ -66,7 +66,7 @@ import { ref, defineProps, computed } from "vue";
 
 interface Animal {
     owner_id: number;
-    owner: { name: string; id: number };
+    owner: { name: string; id: number; phone: string };
     id: number;
     name: string;
     age: number;

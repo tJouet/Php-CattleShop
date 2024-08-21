@@ -12,13 +12,12 @@ class HomeController extends Controller
 {
     public function index(Request $request): Response
     {
-        $users = User::all(['id', 'name']);
+        $users = User::all(['id', 'name','phone']);
 
         return Inertia::render('HomePage', [
             'users' => $users,
             'animals' => HomeController::getAnimalsFromQuery($request),
             'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
         ]);
     }
 
