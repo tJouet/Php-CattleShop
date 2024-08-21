@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AnimalsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,7 +17,8 @@ Route::get('/', function () {
 
     ]);
 });
-Route::get('/', [AnimalsController::class, 'getAnimals']);
+Route::get('/', [HomeController::class,'preload']);
+
 Route::get('/filter-options', [AnimalsController::class, 'getFilterOptions']);
 
 Route::get('/dashboard', function () {

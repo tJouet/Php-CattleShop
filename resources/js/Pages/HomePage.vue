@@ -1,140 +1,93 @@
 <template>
     <Head title="HomePage" />
-    <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-        <div
-            class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white"
-        >
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header
-                    class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3"
+    <div class="">
+        <div class="flex flex-col items-center justify-center">
+            <!-- START MAIN -->
+            <main class="w-full px-6">
+                <div
+                    class="bg-red-300 rounded-md mt-6 justify-between items-center flex md:flex-row p-4 flex-col w-full"
                 >
-                    <div class="flex lg:justify-center lg:col-start-2"></div>
-                    <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
-                        <Link
-                            v-if="$page.props.auth.user"
-                            :href="route('dashboard')"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                    <p v-if="filter" class="text-lg font-bold pb-4 md:pb-0">
+                        {{ filter }} : {{ selectedOption?.label }}
+                    </p>
+                    <p v-else class="text-lg font-bold pb-4">Rechercher par</p>
+
+                    <div class="flex flex-row justify-evenly">
+                        <select
+                            v-model="filter"
+                            @change="(e) => selectSortOption(e?.target?.value)"
+                            class="rounded-md bg-gray-200 md:mr-4 text-black"
                         >
-                            Dashboard
-                        </Link>
-
-                        <template v-else>
-                            <Link
-                                :href="route('login')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            <option disabled selected value="">
+                                -- Filter --
+                            </option>
+                            <option value="type">Type</option>
+                            <option value="price">Price</option>
+                            <option value="age">Age</option>
+                            <option value="owner">Owner</option>
+                            <option value="status">Status</option>
+                        </select>
+                        <select
+                            v-model="option"
+                            @change="(e) => selectOption(e?.target?.value)"
+                            class="rounded-md bg-gray-200 text-black md:mr-4"
+                        >
+                            <option disabled selected value="">
+                                -- Options --
+                            </option>
+                            <option
+                                v-for="filterOption in filterSortOptions"
+                                :value="filterOption.value"
+                                :key="filterOption.value"
                             >
-                                Log in
-                            </Link>
-
-                            <Link
-                                v-if="canRegister"
-                                :href="route('register')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Register
-                            </Link>
-                        </template>
-                    </nav>
-                </header>
-                <!-- START MAIN -->
-                <main class="mt-6">
-                    <div class="navbar bg-base-300 rounded-box mt-6">
-                        <div class="flex-1 px-2 lg:flex-none">
-                            <a class="text-lg font-bold">{{ filter }}:</a>
-                        </div>
-                        <div class="flex flex-1 justify-end px-2">
-                            <div class="flex items-stretch">
-                                <a class="btn btn-ghost rounded-btn">Button</a>
-                                <select
-                                    v-model="filter"
-                                    @change="
-                                        (e) =>
-                                            selectSortOption(e?.target?.value)
-                                    "
-                                    class="rounded-md bg-gray-200 mr-4 text-black"
-                                >
-                                    <option disabled selected value="">
-                                        -- Filter --
-                                    </option>
-                                    <option value="type">Type</option>
-                                    <option value="price">Price</option>
-                                    <option value="age">Age</option>
-                                    <option value="owner">Owner</option>
-                                    <option value="status">Status</option>
-                                </select>
-                                <select
-                                    v-model="option"
-                                    @change="
-                                        (e) => selectOption(e?.target?.value)
-                                    "
-                                    class="rounded-md bg-gray-200 mr-4 text-black"
-                                >
-                                    <option disabled selected value="">
-                                        -- Options --
-                                    </option>
-                                    <option
-                                        :value="option"
-                                        v-for="option in filterSortOptions"
-                                    >
-                                        {{ option }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
+                                {{ filterOption.label }}
+                            </option>
+                        </select>
                     </div>
-                    <h2 class="text-xl font-bold my-6">Animals List</h2>
-                    <ul>
-                        <li v-for="animal in animals" :key="animal.id">
-                            <strong>{{ animal.name }}</strong> -
-                            {{ animal.type }} - {{ animal.race }} - Age:
-                            {{ animal.age }} - Price: ${{ animal.price }} -
-                            Owner: {{ animal.owner }}
-                        </li>
-                    </ul>
-                </main>
-
-                <footer
-                    class="py-16 text-center text-sm text-black dark:text-white/70"
-                >
-                    Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
-                </footer>
-            </div>
+                </div>
+                <h2 class="text-xl font-bold my-6">Animals List</h2>
+                <ul>
+                    <li v-for="animal in animals" :key="animal.id">
+                        <strong>{{ animal.name }}</strong> - {{ animal.type }} -
+                        {{ animal.race }} - Age: {{ animal.age }} - Price: ${{
+                            animal.price
+                        }}
+                        - Owner: {{ animal.owner.name }}
+                    </li>
+                </ul>
+            </main>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { Head, Link, router } from "@inertiajs/vue3";
-import { ref } from "vue";
-import axios from "axios";
+import { Head, router } from "@inertiajs/vue3";
+import { ref, defineProps, computed } from "vue";
 
-defineProps<{
-    canLogin?: boolean;
-    canRegister?: boolean;
-    laravelVersion: string;
-    phpVersion: string;
-    animals: Array<{
-        id: number;
-        name: string;
-        age: number;
-        type: string;
-        race: string;
-        price: number;
-        description: string;
-        status: string;
-        owner: string;
-    }>;
+interface Animal {
+    owner_id: number;
+    owner: { name: string; id: number };
+    id: number;
+    name: string;
+    age: number;
+    type: string;
+    race: string;
+    price: number;
+    description: string;
+    status: string;
+}
+interface User {
+    id: number;
+    name: string;
+}
+const props = defineProps<{
+    animals: Array<Animal>;
+    users: Array<User>;
+    animalsSearchOptions: any;
 }>();
 
-function handleImageError() {
-    document.getElementById("screenshot-container")?.classList.add("!hidden");
-    document.getElementById("docs-card")?.classList.add("!row-span-1");
-    document.getElementById("docs-card-content")?.classList.add("!flex-row");
-    document.getElementById("background")?.classList.add("!hidden");
-}
-
 var filter = ref("");
-const filterSortOptions = ref({});
+const filterSortOptions = ref<{ label: string; value: string | number }[]>([]);
 const option = ref("");
 
 const selectSortOption = (selectedFilter: string) => {
@@ -142,26 +95,86 @@ const selectSortOption = (selectedFilter: string) => {
     switch (selectedFilter) {
         case "price":
             filterSortOptions.value = [
-                "0-100",
-                "100-200",
-                "300-400",
-                "400-500",
+                {
+                    label: "0-100",
+                    value: "0-100",
+                },
+                {
+                    label: "100-200",
+                    value: "100-200",
+                },
+                {
+                    label: "300-400",
+                    value: "300-400",
+                },
+                {
+                    label: "300-400",
+                    value: "300-400",
+                },
+                {
+                    label: "400-500",
+                    value: "400-500",
+                },
             ];
             break;
         case "age":
-            filterSortOptions.value = ["0-5", "5-10", "10-15"];
+            filterSortOptions.value = [
+                {
+                    label: "0-5",
+                    value: "0-5",
+                },
+                {
+                    label: "6-10",
+                    value: "6-10",
+                },
+                {
+                    label: "11-15",
+                    value: "11-15",
+                },
+            ];
             break;
         case "owner":
-            filterSortOptions.value = ["TEST1", "TEST3", "TEST4"];
+            filterSortOptions.value = props.users.map((user) => ({
+                label: user.name,
+                value: user.id,
+            }));
             break;
         case "status":
-            filterSortOptions.value = ["Sold", "Available"];
+            filterSortOptions.value = [
+                {
+                    label: "Sold",
+                    value: "sold",
+                },
+                {
+                    label: "Available",
+                    value: "available",
+                },
+            ];
             break;
         case "type":
-            filterSortOptions.value = ["Dog", "Cat", "Bird"];
+            filterSortOptions.value = [
+                {
+                    label: "Dog",
+                    value: "dog",
+                },
+                {
+                    label: "Cat",
+                    value: "cat",
+                },
+                {
+                    label: "Sheep",
+                    value: "sheep",
+                },
+            ];
             break;
     }
 };
+
+const selectedOption = computed(() => {
+    return filterSortOptions.value.find(
+        (o) => o.value.toString() === option.value
+    );
+});
 
 const selectOption = (selectedOption: string) => {
     option.value = selectedOption;
@@ -178,7 +191,6 @@ const applyFilter = () => {
     }
     const queryString = queryParams.toString();
     const url = `/filter-options?${queryString}`;
-    console.log(url);
     router.visit(url, {
         method: "get",
         preserveState: true,
