@@ -1,29 +1,51 @@
-<script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-</script>
-
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
-        </template>
+        <template #header> </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-
-                    <div class="p-6 text-gray-900">Vos animaux</div>
+                <div class="bg-gray-400 shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 bg-gray-400">Vos animaux</div>
                     <ul>
-                        <li>Test 1</li>
-                        <li>Test 2</li>
-                        <li>Test 3</li>
-                        <li>Test 4</li>
+                        <li v-for="animal in userAnimals" :key="animal.id">
+                            <strong>{{ animal.name }}</strong> -
+                            {{ animal.type }} - {{ animal.race }} - Age:
+                            {{ animal.age }} - Price: ${{ animal.price }}
+                            <a
+                                :href="
+                                    route('dashboard.edit', { id: animal.id })
+                                "
+                                class="mx-6"
+                            >
+                                Edit
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
+<script setup lang="ts">
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head } from "@inertiajs/vue3";
+import { defineProps } from "vue";
+
+interface Animal {
+    owner_id: number;
+    owner: { name: string; id: number; phone: string };
+    id: number;
+    name: string;
+    age: number;
+    type: string;
+    race: string;
+    price: number;
+    description: string;
+    status: string;
+}
+
+const props = defineProps<{ userAnimals: Array<Animal> }>();
+</script>

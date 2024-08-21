@@ -2,14 +2,23 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
 
 Route::get('/', [HomeController::class,'index']);
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+    Route::get('/dashboard/{id}', [DashboardController::class, 'editAnimal'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.edit');
+
+    Route::patch('/dashboard/{id}', [DashboardController::class, 'updateAnimal'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.update');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -1,6 +1,5 @@
 <template>
     <Head title="HomePage" />
-
     <Header :canLogin="true" />
     <div class="flex flex-col items-center justify-center">
         <main class="w-full px-6">
