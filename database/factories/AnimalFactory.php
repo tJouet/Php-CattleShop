@@ -29,6 +29,7 @@ class AnimalFactory extends Factory
             'description' => $this->faker->sentence,
             'status' => $this->faker->randomElement(AnimalStatus::cases()),
             'owner_id' => User::inRandomOrder()->first()->id,
+            // 'image' => $faker->image('public/storage/images',640,480, null, false),
         ];
     }
 }

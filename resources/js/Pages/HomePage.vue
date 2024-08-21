@@ -1,66 +1,66 @@
 <template>
     <Head title="HomePage" />
-    <div class="">
-        <div class="flex flex-col items-center justify-center">
-            <!-- START MAIN -->
-            <main class="w-full px-6">
-                <div
-                    class="bg-red-300 rounded-md mt-6 justify-between items-center flex md:flex-row p-4 flex-col w-full"
-                >
-                    <p v-if="filter" class="text-lg font-bold pb-4 md:pb-0">
-                        {{ filter }} : {{ selectedOption?.label }}
-                    </p>
-                    <p v-else class="text-lg font-bold pb-4">Rechercher par</p>
+    <Header :canLogin="true" />
+    <div class="flex flex-col items-center justify-center">
+        <!-- START MAIN -->
+        <main class="w-full px-6">
+            <div
+                class="bg-red-300 rounded-md mt-6 justify-between items-center flex md:flex-row p-4 flex-col w-full"
+            >
+                <p v-if="filter" class="text-lg font-bold pb-4 md:pb-0">
+                    {{ filter }} : {{ selectedOption?.label }}
+                </p>
+                <p v-else class="text-lg font-bold pb-4 md:pb-0">
+                    Rechercher par
+                </p>
 
-                    <div class="flex flex-row justify-evenly">
-                        <select
-                            v-model="filter"
-                            @change="(e) => selectSortOption(e?.target?.value)"
-                            class="rounded-md bg-gray-200 md:mr-4 text-black"
+                <div class="flex flex-row justify-evenly">
+                    <select
+                        v-model="filter"
+                        @change="(e) => selectSortOption(e?.target?.value)"
+                        class="rounded-md bg-gray-200 md:mr-4 text-black"
+                    >
+                        <option disabled selected value="">-- Filter --</option>
+                        <option value="type">Type</option>
+                        <option value="price">Price</option>
+                        <option value="age">Age</option>
+                        <option value="owner">Owner</option>
+                        <option value="status">Status</option>
+                    </select>
+                    <select
+                        v-model="option"
+                        @change="(e) => selectOption(e?.target?.value)"
+                        class="rounded-md bg-gray-200 text-black md:mr-4"
+                    >
+                        <option disabled selected value="">
+                            -- Options --
+                        </option>
+                        <option
+                            v-for="filterOption in filterSortOptions"
+                            :value="filterOption.value"
+                            :key="filterOption.value"
                         >
-                            <option disabled selected value="">
-                                -- Filter --
-                            </option>
-                            <option value="type">Type</option>
-                            <option value="price">Price</option>
-                            <option value="age">Age</option>
-                            <option value="owner">Owner</option>
-                            <option value="status">Status</option>
-                        </select>
-                        <select
-                            v-model="option"
-                            @change="(e) => selectOption(e?.target?.value)"
-                            class="rounded-md bg-gray-200 text-black md:mr-4"
-                        >
-                            <option disabled selected value="">
-                                -- Options --
-                            </option>
-                            <option
-                                v-for="filterOption in filterSortOptions"
-                                :value="filterOption.value"
-                                :key="filterOption.value"
-                            >
-                                {{ filterOption.label }}
-                            </option>
-                        </select>
-                    </div>
+                            {{ filterOption.label }}
+                        </option>
+                    </select>
                 </div>
-                <h2 class="text-xl font-bold my-6">Animals List</h2>
-                <ul>
-                    <li v-for="animal in animals" :key="animal.id">
-                        <strong>{{ animal.name }}</strong> - {{ animal.type }} -
-                        {{ animal.race }} - Age: {{ animal.age }} - Price: ${{
-                            animal.price
-                        }}
-                        - Owner: {{ animal.owner.name }}
-                    </li>
-                </ul>
-            </main>
-        </div>
+            </div>
+            <h2 class="text-xl font-bold my-6">Animals List</h2>
+            <ul>
+                <li v-for="animal in animals" :key="animal.id">
+                    <strong>{{ animal.name }}</strong> - {{ animal.type }} -
+                    {{ animal.race }} - Age: {{ animal.age }} - Price: ${{
+                        animal.price
+                    }}
+                    - Owner: {{ animal.owner.name }}
+                </li>
+            </ul>
+        </main>
     </div>
 </template>
 
 <script setup lang="ts">
+import Header from "../Components/Header.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { ref, defineProps, computed } from "vue";
 
@@ -190,7 +190,8 @@ const applyFilter = () => {
         queryParams.append("sort_option", option.value);
     }
     const queryString = queryParams.toString();
-    const url = `/filter-options?${queryString}`;
+
+    const url = `/?${queryString}`;
     router.visit(url, {
         method: "get",
         preserveState: true,
