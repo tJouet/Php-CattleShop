@@ -1,6 +1,6 @@
 <template>
     <Head title="Create" /><AuthenticatedLayout>
-        <div class="container mx-auto">
+        <div class="container mx-auto mt-6">
             <h2 class="text-2xl font-bold mb-4">Creation form</h2>
             <form @submit.prevent="submitForm" class="space-y-4 flex flex-col">
                 <div v-for="formInput in formInputs">
@@ -50,17 +50,6 @@ const form = ref({
 });
 
 const submitForm = () => {
-    console.log(form.value);
-    // const queryParams = new URLSearchParams();
-
-    // queryParams.append("name", form.value.name);
-    // queryParams.append("age", form.value.age);
-    // queryParams.append("description", form.value.description);
-    // queryParams.append("price", form.value.price);
-    // queryParams.append("type", form.value.type);
-    // queryParams.append("race", form.value.race);
-    // queryParams.append("status", "available");
-
     router.post(`/dashboard/create`, form.value);
 };
 </script>

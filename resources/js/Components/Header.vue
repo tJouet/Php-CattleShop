@@ -1,11 +1,21 @@
 <template>
-    <div class="p-10 bg-blue-100 flex flex-row w-full justify-between">
-        <h1>Mink family market</h1>
+    <div
+        class="p-10 flex flex-row w-full justify-between items-center text-white text-[20px]"
+        style="
+            background: rgba(0, 0, 0, 0.55) url('/images/headerLandscape.jpg');
+            background-blend-mode: darken;
+            background-size: cover;
+            background-position: center;
+        "
+    >
+        <h1 class="text-[64px] font-bold drop-shadow-2xl">
+            Mink family market
+        </h1>
         <nav v-if="props.canLogin">
             <Link v-if="$page.props.auth.user" :href="route('dashboard')">
                 Dashboard
             </Link>
-            <Link :href="route('login')"> Log in </Link>
+            <Link v-else :href="route('login')"> Log in </Link>
         </nav>
     </div>
 </template>
@@ -16,3 +26,9 @@ const props = defineProps<{
     canLogin?: boolean;
 }>();
 </script>
+
+<style>
+.strokedtext {
+    -webkit-text-stroke: 1px #111726;
+}
+</style>

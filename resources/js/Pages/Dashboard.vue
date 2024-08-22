@@ -1,9 +1,11 @@
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <template #header> </template>
-        <div class="overflow-x-auto">
-            <table class="table table-zebra">
+        <template #header> <Header /> </template>
+        <div class="flex flex-col justify-center items-start m-6 gap-6">
+            <h2 class="text-[32px]">My animals</h2>
+
+            <table class="table table-zebra bg-white">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -27,9 +29,11 @@
                         <td>
                             <a
                                 :href="
-                                    route('dashboard.edit', { id: animal.id })
+                                    route('dashboard.edit', {
+                                        id: animal.id,
+                                    })
                                 "
-                                class="mx-6"
+                                class="mx-6 bg-lightPink p-2 rounded-md"
                             >
                                 Edit
                             </a>
@@ -37,14 +41,19 @@
                     </tr>
                 </tbody>
             </table>
+
+            <a
+                :href="route('dashboard.create')"
+                class="bg-white border-blue-200 border-2 py-4 px-6 rounded-md"
+            >
+                Create a new animal
+            </a>
         </div>
-        <a :href="route('dashboard.create')" class="mx-6 bg-blue-200">
-            Create a new animal
-        </a>
     </AuthenticatedLayout>
 </template>
 
 <script setup lang="ts">
+import Header from "@/Components/Header.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
 

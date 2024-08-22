@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [HomeController::class,'index']);
+Route::get('/', [HomeController::class,'index'])->name('homePage');
 
 Route::post('/dashboard/create',[DashboardController::class, 'createAnimal'])
 ->middleware(['auth', 'verified']);

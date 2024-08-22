@@ -1,7 +1,7 @@
 <template>
     <Head title="HomePage" />
     <Header :canLogin="true" />
-    <div class="flex flex-col items-center justify-center">
+    <div class="flex flex-col items-center justify-center bg-white">
         <main class="w-full px-6">
             <div
                 class="bg-lightPink rounded-md mt-6 justify-between items-center flex md:flex-row p-4 flex-col w-full"
