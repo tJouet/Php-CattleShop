@@ -23,7 +23,6 @@ class AnimalsController extends Controller
          $filter = $request->query('filter');
          $sortOption = $request->query('sort_option');
          $query = Animal::query();
-        //  /filter-options?filter=price&sort_option=100-200
          switch($filter) {
             case 'price':
                 [$minPrice, $maxPrice] = explode('-', $sortOption);
@@ -40,7 +39,7 @@ class AnimalsController extends Controller
                 $query->where('status',$sortOption);
                 break;
             case 'owner':
-                $query -> where('owner_id',$sortOption);
+                $query->where('owner_id',$sortOption);
                 break;
          }
 
@@ -48,10 +47,9 @@ class AnimalsController extends Controller
             $query->orderBy($filter);
         }
 
-        $sortedAnimals = $query->with('owner')->get();
+        $sortedAnimals = $query->with(['owner','images'])->get();
         //Send back users
         $users = User::all(['id', 'name']);
-
         return Inertia::render('HomePage', [
             'users' => $users,
             'animals' => $sortedAnimals

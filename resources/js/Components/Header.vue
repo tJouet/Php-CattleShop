@@ -2,7 +2,8 @@
     <div
         class="p-10 flex flex-row w-full justify-between items-center text-white text-[20px]"
         style="
-            background: rgba(0, 0, 0, 0.55) url('/images/headerLandscape.jpg');
+            background: rgba(0, 0, 0, 0.55)
+                url('/storage/images/headerLandscape.jpg');
             background-blend-mode: darken;
             background-size: cover;
             background-position: center;

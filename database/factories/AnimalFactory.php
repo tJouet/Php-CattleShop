@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Animal;
 use App\Models\User;
+use App\Models\Image;
 use App\Types\AnimalType;
 use App\Types\AnimalStatus;
 /**
@@ -29,7 +30,15 @@ class AnimalFactory extends Factory
             'description' => $this->faker->sentence,
             'status' => $this->faker->randomElement(AnimalStatus::cases()),
             'owner_id' => User::inRandomOrder()->first()->id,
-            // 'image' => $faker->image('public/storage/images',640,480, null, false),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Animal $animal) {
+            $animal->images()->createMany(
+                Image::factory()->count(3)->make()->toArray()
+            );
+        });
     }
 }

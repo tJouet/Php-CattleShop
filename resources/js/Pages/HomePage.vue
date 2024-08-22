@@ -68,6 +68,9 @@
                     </thead>
                     <tbody>
                         <tr v-for="animal in animals" :key="animal.id">
+                            {{
+                                animal.images
+                            }}
                             <td>{{ animal.name }}</td>
                             <td>{{ animal.type }}</td>
                             <td>{{ animal.race }}</td>
@@ -95,6 +98,7 @@ import { Head, router } from "@inertiajs/vue3";
 import { ref, defineProps, computed } from "vue";
 
 interface Animal {
+    images: { url: string; animal_id: number };
     owner_id: number;
     owner: { name: string; id: number; phone: string };
     id: number;
