@@ -1,17 +1,30 @@
 <template>
     <Head title="Dashboard" />
-
     <AuthenticatedLayout>
         <template #header> </template>
-        <div class="py-12 mx-auto">
-            <div class="mx-auto sm:px-6 lg:px-8">
-                <div class="bg-gray-400 shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 bg-gray-400">Vos animaux</div>
-                    <ul>
-                        <li v-for="animal in userAnimals" :key="animal.id">
-                            <strong>{{ animal.name }}</strong> -
-                            {{ animal.type }} - {{ animal.race }} - Age:
-                            {{ animal.age }} - Price: ${{ animal.price }}
+        <div class="overflow-x-auto">
+            <table class="table table-zebra">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Race</th>
+                        <th>Age</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="animal in userAnimals" :key="animal.id">
+                        <td>{{ animal.name }}</td>
+                        <td>{{ animal.type }}</td>
+                        <td>{{ animal.race }}</td>
+                        <td>{{ animal.age }}</td>
+                        <td class="flex flex-row">
+                            {{ animal.price }}€ -
+                            <span class="md:block hidden"> Hors taxe</span>
+                            <span class="md:hidden block"> HT</span>
+                        </td>
+                        <td>
                             <a
                                 :href="
                                     route('dashboard.edit', { id: animal.id })
@@ -20,10 +33,10 @@
                             >
                                 Edit
                             </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <a :href="route('dashboard.create')" class="mx-6 bg-blue-200">
             Create a new animal
