@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import daisyui from 'daisyui';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -12,6 +13,9 @@ export default {
 
     theme: {
         extend: {
+            colors:{
+                lightPink:"#E7E2DF"
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
@@ -19,5 +23,11 @@ export default {
     },
 
     plugins: [
-        forms],
+        forms,
+        require('daisyui'),
+    ],
+
+    daisyui: {
+        themes: ["light", "dark", "cupcake"],
+    },
 };
