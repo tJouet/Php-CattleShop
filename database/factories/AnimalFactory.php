@@ -37,7 +37,7 @@ class AnimalFactory extends Factory
     {
         return $this->afterCreating(function (Animal $animal) {
             $animal->images()->createMany(
-                Image::factory()->count(3)->make()->toArray()
+                Image::factory()->count(2)->make()->toArray()
             );
         });
     }

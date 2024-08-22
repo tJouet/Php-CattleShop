@@ -12,6 +12,6 @@ class AnimalsSeeder extends Seeder
      */
     public function run(): void
     {
-        Animal::factory(50)->create();
+        Animal::factory(20)->create();
     }
 }
