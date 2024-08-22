@@ -31,6 +31,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
+interface FormTypes {
+    [key: string]: string;
+}
+
 const formInputs = [
     { label: "Name", value: "name", type: "text" },
     { label: "Type", value: "type", type: "text" },
@@ -39,7 +43,7 @@ const formInputs = [
     { label: "Price", value: "price", type: "number", step: "0.01", min: "0" },
     { label: "Description", value: "description", type: "text" },
 ];
-const form = ref({
+const form = ref<FormTypes>({
     name: "",
     type: "",
     race: "",

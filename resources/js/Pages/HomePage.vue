@@ -20,7 +20,7 @@
                 <div class="flex flex-row justify-evenly">
                     <select
                         v-model="filter"
-                        @change="(e) => selectSortOption(e?.target?.value)"
+                        @change="(e) => selectSortOption((e.target as HTMLSelectElement).value)"
                         class="rounded-md bg-gray-200 md:mr-4 text-black"
                     >
                         <option disabled selected value="">-- Filter --</option>
@@ -34,7 +34,7 @@
                     </select>
                     <select
                         v-model="option"
-                        @change="(e) => selectOption(e?.target?.value)"
+                        @change="(e) => selectOption((e.target as HTMLSelectElement).value)"
                         class="rounded-md bg-gray-200 text-black md:mr-4"
                         :disabled="!filter"
                     >
