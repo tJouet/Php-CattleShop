@@ -52,7 +52,10 @@
                 <label for="status" class="flex flex-row">
                     Availability:
                     <input type="checkbox" class="mx-6" v-model="form.status" />
-                    <p>Is available to purchase</p>
+                    <p v-if="form.status === true">
+                        This animal is available for purchase
+                    </p>
+                    <p v-else>This animal is not available for purchase</p>
                 </label>
 
                 <div class="flex flex-row">
@@ -63,6 +66,8 @@
                         Submit
                     </button>
                     <button
+                        @click="putDownAnimal"
+                        type="button"
                         class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                     >
                         Delete
@@ -92,7 +97,6 @@ const form = ref({
 });
 
 const submitForm = () => {
-    console.log("Form Data:", form.value);
     submitted.value = true;
 
     const queryParams = new URLSearchParams();
@@ -106,8 +110,6 @@ const submitForm = () => {
         form.value.status === true ? "available" : "sold"
     );
 
-    const queryString = queryParams.toString();
-
     const url = `/dashboard/${props.animal.id}`;
     router.visit(url, {
         method: "patch",
@@ -115,5 +117,20 @@ const submitForm = () => {
         preserveState: true,
         replace: true,
     });
+};
+
+const putDownAnimal = async () => {
+    const url = `/dashboard/${props.animal.id}`;
+
+    try {
+        await router.delete(url, {
+            onBefore: () =>
+                confirm("Are you sure you want to delete this animal?"),
+            preserveState: true,
+            replace: true,
+        });
+    } catch (error) {
+        console.error("Failed to delete the animal:", error);
+    }
 };
 </script>

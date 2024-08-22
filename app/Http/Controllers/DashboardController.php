@@ -20,19 +20,52 @@ class DashboardController extends Controller
             'animal' => $animal
         ]);
     }
+
     public function updateAnimal(Request $request, $id) {
         $animal = Animal::findOrFail($id);
 
+        $data = $request->validate([
+            'name' => 'required|string|max:50',
+            'age' => 'required|integer',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'status' => 'required|string',
+
+        ]);
+
+        $animal->update($data);
+
+        return redirect()->route('dashboard');
+    }
+
+    public function putDownAnimal ($id) {
+        $animal = Animal::findOrFail($id);
+        $animal->delete();
+        return redirect()->route('dashboard');
+    }
+
+    public function displayCreateForm () {
+        return Inertia::render('DashboardCreate');
+    }
+
+    public function createAnimal (Request $request) {
+        $userId = $request->user()->id;
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'age' => 'required|integer',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'status' => 'required|string',
+            'race' => 'required|string|max:50',
+            'type' => 'required|string|max:50',
         ]);
 
-        $animal->update($data);
+        $data['owner_id']=$userId;
 
-        return redirect()->route('dashboard.edit', $animal->id)->with('success', 'Animal updated successfully!');
+        Animal::create($data);
+
+        return Inertia::render('Dashboard',[
+            'userAnimals' => Animal::where('owner_id',$userId)->get()
+        ]);
     }
 }

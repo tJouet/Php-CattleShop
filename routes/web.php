@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class,'index']);
 
+Route::post('/dashboard/create',[DashboardController::class, 'createAnimal'])
+->middleware(['auth', 'verified']);
+
+Route::get('/dashboard/create',[DashboardController::class, 'displayCreateForm'])
+->middleware(['auth', 'verified'])
+->name('dashboard.create');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -20,22 +27,14 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.update');
 
+    Route::delete('/dashboard/{id}', [DashboardController::class, 'putDownAnimal'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.destroy');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route::get('/dashboard/{animalId}', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard.details');
-
-
-// Route::patch('/dashboard/{animalId}', function () {
-//     // todo: update
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::delete('/dashboard/{animalId}', function () {
-//     // todo: delete
-// })->middleware(['auth', 'verified'])->name('dashboard');
 require __DIR__.'/auth.php';
