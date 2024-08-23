@@ -50,6 +50,6 @@ class HomeController extends Controller
            $query->orderBy($filter);
         }
 
-       return $query->with('owner')->get();
+       return $query->with('owner','images')->get();
    }
 }

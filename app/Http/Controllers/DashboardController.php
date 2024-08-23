@@ -61,11 +61,23 @@ class DashboardController extends Controller
             'status' => 'required|string',
             'race' => 'required|string|max:50',
             'type' => 'required|string|max:50',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $data['owner_id']=$userId;
 
-        Animal::create($data);
+        $animal = Animal::create($data);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $filename = $file->getClientOriginalName();
+                $file->storeAs('public/images', $filename);
+
+                $animal->images()->create([
+                    'url' => $filename,
+                ]);
+            }
+        }
 
         return Inertia::render('Dashboard',[
             'userAnimals' => Animal::where('owner_id',$userId)->get()

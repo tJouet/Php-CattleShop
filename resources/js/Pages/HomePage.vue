@@ -60,6 +60,7 @@
                             <th>Name</th>
                             <th>Type</th>
                             <th>Race</th>
+                            <th>Images</th>
                             <th>Age</th>
                             <th>Price</th>
                             <th>Owner</th>
@@ -68,12 +69,18 @@
                     </thead>
                     <tbody>
                         <tr v-for="animal in animals" :key="animal.id">
-                            {{
-                                animal.images
-                            }}
                             <td>{{ animal.name }}</td>
                             <td>{{ animal.type }}</td>
                             <td>{{ animal.race }}</td>
+                            <td>
+                                <img
+                                    v-for="(image, index) in animal.images"
+                                    :key="index"
+                                    :src="`/storage/images/${image.url}`"
+                                    :alt="animal.name"
+                                    class="w-16 h-16 object-cover"
+                                />
+                            </td>
                             <td>{{ animal.age }}</td>
                             <td class="flex flex-row">
                                 {{ getTaxedPrice(animal.price) }}€ -
@@ -98,7 +105,7 @@ import { Head, router } from "@inertiajs/vue3";
 import { ref, defineProps, computed } from "vue";
 
 interface Animal {
-    images: { url: string; animal_id: number };
+    images: { url: string; animal_id: number }[];
     owner_id: number;
     owner: { name: string; id: number; phone: string };
     id: number;

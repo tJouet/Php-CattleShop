@@ -21,7 +21,14 @@
                                 {{ option.label }}
                             </option>
                         </select>
+                        <!-- TO DO: Add a button to add a new animal type -->
                     </div>
+                    <input
+                        v-else-if="formInput.type === 'file'"
+                        type="file"
+                        @change="handleFileChange"
+                        :class="formInput.class"
+                    />
                     <input
                         v-else
                         :type="formInput.type"
@@ -57,6 +64,17 @@ const props = defineProps({
         required: true,
     },
 });
+const form = ref<FormTypes>({
+    name: "",
+    type: "",
+    race: "",
+    age: "",
+    price: "",
+    description: "",
+    status: "available",
+});
+
+const files = ref<File[]>([]);
 
 const animalTypesOptions: Array<{ label: string; value: string }> =
     props.animalTypes.map((animal: string) => ({
@@ -76,18 +94,42 @@ const formInputs = [
     { label: "Age", value: "age", type: "number", min: "1" },
     { label: "Price", value: "price", type: "number", step: "0.01", min: "0" },
     { label: "Description", value: "description", type: "text" },
+    {
+        label: "Pictures",
+        value: "images",
+        type: "file",
+        class: "file-input w-full max-w-xs",
+    },
 ];
-const form = ref<FormTypes>({
-    name: "",
-    type: "",
-    race: "",
-    age: "",
-    price: "",
-    description: "",
-    status: "available",
-});
 
-const submitForm = () => {
-    router.post(`/dashboard/create`, form.value);
+const handleFileChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+        files.value = Array.from(target.files);
+    }
+};
+
+const submitForm = async () => {
+    console.log(form.value);
+    const formData = new FormData();
+
+    Object.keys(form.value).forEach((key) => {
+        formData.append(key, form.value[key]);
+    });
+
+    files.value.forEach((file) => {
+        formData.append("images[]", file);
+    });
+
+    try {
+        await router.post(`/dashboard/create`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        console.log("Form submitted successfully!");
+    } catch (error) {
+        console.error("Error submitting form:", error);
+    }
 };
 </script>
