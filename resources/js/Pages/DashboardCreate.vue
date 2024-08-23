@@ -7,7 +7,23 @@
                     <label :for="formInput.value" class="block font-semibold"
                         >{{ formInput.label }}:
                     </label>
+                    <div v-if="formInput.type === 'select'">
+                        <select
+                            v-model="form[formInput.value]"
+                            class="mt-1 p-2 w-full border rounded-md"
+                            required
+                        >
+                            <option
+                                v-for="(option, index) in formInput.options"
+                                :key="index"
+                                :value="option.value"
+                            >
+                                {{ option.label }}
+                            </option>
+                        </select>
+                    </div>
                     <input
+                        v-else
                         :type="formInput.type"
                         v-model="form[formInput.value]"
                         :step="formInput.step ?? formInput.step"
@@ -29,15 +45,33 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { PropType, ref } from "vue";
 
 interface FormTypes {
     [key: string]: string;
 }
 
+const props = defineProps({
+    animalTypes: {
+        type: Array as PropType<string[]>,
+        required: true,
+    },
+});
+
+const animalTypesOptions: Array<{ label: string; value: string }> =
+    props.animalTypes.map((animal: string) => ({
+        label: animal.charAt(0).toUpperCase() + animal.slice(1),
+        value: animal,
+    }));
+
 const formInputs = [
     { label: "Name", value: "name", type: "text" },
-    { label: "Type", value: "type", type: "text" },
+    {
+        label: "Type",
+        value: "type",
+        type: "select",
+        options: animalTypesOptions,
+    },
     { label: "Race", value: "race", type: "text" },
     { label: "Age", value: "age", type: "number", min: "1" },
     { label: "Price", value: "price", type: "number", step: "0.01", min: "0" },

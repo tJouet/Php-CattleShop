@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Types\AnimalType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class DashboardController extends Controller
@@ -45,9 +46,11 @@ class DashboardController extends Controller
     }
 
     public function displayCreateForm () {
-        return Inertia::render('DashboardCreate');
+        $animalTypes = collect(AnimalType::cases())->map(fn($type) => $type->value);
+        return Inertia::render('DashboardCreate',[
+            "animalTypes" => $animalTypes
+        ]);
     }
-
     public function createAnimal (Request $request) {
         $userId = $request->user()->id;
         $data = $request->validate([
