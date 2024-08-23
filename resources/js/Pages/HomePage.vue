@@ -73,13 +73,21 @@
                             <td>{{ animal.type }}</td>
                             <td>{{ animal.race }}</td>
                             <td>
-                                <img
-                                    v-for="(image, index) in animal.images"
-                                    :key="index"
-                                    :src="`/storage/images/${image.url}`"
-                                    :alt="animal.name"
-                                    class="w-16 h-16 object-cover"
-                                />
+                                <div
+                                    class="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4"
+                                >
+                                    <div
+                                        v-for="(image, index) in animal.images"
+                                        :key="index"
+                                        class="carousel-item"
+                                    >
+                                        <img
+                                            :src="`/storage/images/${image.url}`"
+                                            :alt="animal.name"
+                                            class="w-16 h-16 object-cover"
+                                        />
+                                    </div>
+                                </div>
                             </td>
                             <td>{{ animal.age }}</td>
                             <td class="flex flex-row">

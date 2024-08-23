@@ -49,6 +49,7 @@
                         required
                     ></textarea>
                 </div>
+                <!-- TO DO: Sink this value with DB received value -->
                 <label for="status" class="flex flex-row">
                     Availability:
                     <input type="checkbox" class="mx-6" v-model="form.status" />
@@ -57,7 +58,7 @@
                     </p>
                     <p v-else>This animal is not available for purchase</p>
                 </label>
-
+                <!-- TO DO: Add ways to upload a picture -->
                 <div class="flex flex-row">
                     <button
                         type="submit"
