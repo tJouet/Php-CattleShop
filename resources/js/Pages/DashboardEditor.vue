@@ -52,8 +52,13 @@
                 <!-- TO DO: Sink this value with DB received value -->
                 <label for="status" class="flex flex-row">
                     Availability:
-                    <input type="checkbox" class="mx-6" v-model="form.status" />
-                    <p v-if="form.status === true">
+                    <input
+                        type="checkbox"
+                        class="mx-6"
+                        v-model="form.status"
+                        :checked="animal.status === 'available'"
+                    />
+                    <p v-if="form.status === 'available'">
                         This animal is available for purchase
                     </p>
                     <p v-else>This animal is not available for purchase</p>
@@ -82,9 +87,21 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
-
+interface Animal {
+    images: { url: string; animal_id: number }[];
+    owner_id: number;
+    owner: { name: string; id: number; phone: string };
+    id: number;
+    name: string;
+    age: number;
+    type: string;
+    race: string;
+    price: number;
+    description: string;
+    status: string;
+}
 const props = defineProps<{
-    animal: any;
+    animal: Animal;
 }>();
 
 const submitted = ref(false);

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="p-10 flex flex-row w-full justify-between items-center text-white text-[20px]"
+        class="md:p-10 py-10 px-4 flex flex-row w-full justify-between items-center text-white text-[20px]"
         style="
             background: rgba(0, 0, 0, 0.55)
                 url('/storage/images/headerLandscape.jpg');
@@ -9,8 +9,8 @@
             background-position: center;
         "
     >
-        <h1 class="text-[64px] font-bold drop-shadow-2xl">
-            Mink family market
+        <h1 class="md:text-[64px] text lg font-bold drop-shadow-2xl">
+            <a href="/">Mink family market</a>
         </h1>
         <nav v-if="props.canLogin">
             <Link v-if="$page.props.auth.user" :href="route('dashboard')">

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class,'index'])->name('homePage');
 
+Route::get('/animalprofile/{id}', [HomeController::class,'displayAnimalProfil'])->name('animal.profil');
+
 Route::post('/dashboard/create',[DashboardController::class, 'createAnimal'])
 ->middleware(['auth', 'verified']);
 

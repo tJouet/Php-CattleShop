@@ -60,7 +60,6 @@
                             <th>Name</th>
                             <th>Type</th>
                             <th>Race</th>
-                            <th>Images</th>
                             <th>Age</th>
                             <th>Price</th>
                             <th>Owner</th>
@@ -69,36 +68,30 @@
                     </thead>
                     <tbody>
                         <tr v-for="animal in animals" :key="animal.id">
-                            <td>{{ animal.name }}</td>
+                            <th>{{ animal.name }}</th>
                             <td>{{ animal.type }}</td>
                             <td>{{ animal.race }}</td>
-                            <td>
-                                <div
-                                    class="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4"
-                                >
-                                    <div
-                                        v-for="(image, index) in animal.images"
-                                        :key="index"
-                                        class="carousel-item"
-                                    >
-                                        <img
-                                            :src="`/storage/images/${image.url}`"
-                                            :alt="animal.name"
-                                            class="w-16 h-16 object-cover"
-                                        />
-                                    </div>
-                                </div>
-                            </td>
                             <td>{{ animal.age }}</td>
-                            <td class="flex flex-row">
-                                {{ getTaxedPrice(animal.price) }}€ -
+                            <td>
+                                {{ getTaxedPrice(animal.price) }}€
                                 <span class="md:block hidden">
                                     Toutes taxes comprises</span
                                 >
-                                <span class="md:hidden block"> TTC</span>
+                                <span class="md:hidden block h-full"> TTC</span>
                             </td>
                             <td>{{ animal.owner.name }}</td>
-                            <td>{{ animal.owner.phone }}</td>
+                            <td>
+                                <Link
+                                    class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+                                    :href="
+                                        route('animal.profil', {
+                                            id: animal.id,
+                                        })
+                                    "
+                                >
+                                    Inspect
+                                </Link>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -109,20 +102,18 @@
 
 <script setup lang="ts">
 import Header from "../Components/Header.vue";
-import { Head, router } from "@inertiajs/vue3";
+import { Head, router, Link } from "@inertiajs/vue3";
 import { ref, defineProps, computed } from "vue";
 
 interface Animal {
-    images: { url: string; animal_id: number }[];
     owner_id: number;
-    owner: { name: string; id: number; phone: string };
+    owner: { name: string; id: number };
     id: number;
     name: string;
     age: number;
     type: string;
     race: string;
     price: number;
-    description: string;
     status: string;
 }
 interface User {
@@ -217,6 +208,10 @@ const selectSortOption = (selectedFilter: string) => {
                 {
                     label: "Sheep",
                     value: "sheep",
+                },
+                {
+                    label: "Horse",
+                    value: "horse",
                 },
             ];
             break;

@@ -28,6 +28,7 @@
                         type="file"
                         @change="handleFileChange"
                         :class="formInput.class"
+                        multiple
                     />
                     <input
                         v-else

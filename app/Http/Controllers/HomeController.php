@@ -52,4 +52,13 @@ class HomeController extends Controller
 
        return $query->with('owner','images')->get();
    }
+
+   public function displayAnimalProfil (Request $request, $id) {
+
+    $animal =  Animal::with('owner','images')->findOrFail($id);
+
+    return Inertia::render('AnimalInspect', [
+        'animal' => $animal
+    ]);
+   }
 }
