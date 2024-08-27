@@ -26,7 +26,6 @@
                             >
                                 {{ option.label }}
                             </option>
-                            <!-- TO DO: Sink this value with DB received value -->
                             <option
                                 v-else-if="formInput.value === 'status'"
                                 v-for="(option, index) in providedAnimalStatus"
