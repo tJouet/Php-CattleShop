@@ -18,12 +18,19 @@
                             required
                         >
                             <option
+                                v-if="formInput.value === 'type'"
                                 v-for="(option, index) in animalTypesOptions"
                                 :key="index"
                                 :value="option.value"
                             >
                                 {{ option.label }}
                             </option>
+                            <option
+                                v-else-if="formInput.value === 'status'"
+                                v-for="(option, index) in animalAvailabilty"
+                                :key="option + index"
+                                :value="option"
+                            ></option>
                         </select>
                         <!-- TO DO: Add a button to add a new animal type -->
                     </div>
@@ -51,7 +58,7 @@
                         type="checkbox"
                         class="mx-6"
                         v-model="form.status"
-                        :checked="animal.status === 'available'"
+                        :checked="props.animal.status === 'available'"
                     />
                     <p v-if="form.status === 'available'">
                         This animal is available for purchase
@@ -86,7 +93,7 @@ import { TypeAnimal } from "@/types/animals";
 import { TypeFormInputs } from "@/types/formInputs";
 
 interface FormTypes {
-    [key: string]: string | number;
+    [key: string]: string | number | boolean;
 }
 
 const props = defineProps({
@@ -105,6 +112,8 @@ const props = defineProps({
 });
 const submitted = ref(false);
 
+const animalAvailabilty = ["available", "sold"];
+
 const form = ref<FormTypes>({
     name: props.animal.name,
     age: props.animal.age,
@@ -115,6 +124,7 @@ const form = ref<FormTypes>({
     status: props.animal.status,
 });
 const files = ref<File[]>([]);
+
 const animalTypesOptions: Array<{ label: string; value: string }> =
     props.providedAnimalTypes.map((animal: string) => ({
         label: animal.charAt(0).toUpperCase() + animal.slice(1),
@@ -130,26 +140,29 @@ const handleFileChange = (event: Event) => {
 
 const submitForm = () => {
     submitted.value = true;
-
-    const queryParams = new URLSearchParams();
-
-    queryParams.append("name", form.value.name);
-    queryParams.append("age", form.value.age);
-    queryParams.append("type", form.value.type);
-    queryParams.append("race", form.value.race);
-    queryParams.append("description", form.value.description);
-    queryParams.append("price", form.value.price);
-    queryParams.append(
+    const formData = new FormData();
+    formData.append("_method", "PATCH");
+    Object.keys(form.value).forEach((key) => {
+        formData.append(key, form.value[key].toString());
+    });
+    formData.append(
         "status",
         form.value.status === true ? "available" : "sold"
     );
 
+    files.value.forEach((file) => {
+        formData.append("images[]", file);
+    });
+
     const url = `/dashboard/${props.animal.id}`;
     router.visit(url, {
-        method: "patch",
-        data: Object.fromEntries(queryParams),
+        method: "post",
+        data: formData,
         preserveState: true,
         replace: true,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
     });
 };
 

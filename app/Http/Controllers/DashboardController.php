@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
     public function updateAnimal(Request $request, $id) {
         $animal = Animal::findOrFail($id);
-
+        $userId = $request->user()->id;
         $data = $request->validate([
             'name' => 'required|string|max:50',
             'age' => 'required|integer',
@@ -33,11 +33,26 @@ class DashboardController extends Controller
             'status' => 'required|string',
             'type'=> 'required|string',
             'race'=> 'required|string',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $animal->update($data);
+        $data['owner_id']=$userId;
 
-        return redirect()->route('dashboard');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $filename = $file->getClientOriginalName();
+                $file->storeAs('public/images', $filename);
+                $animal->images()->create([
+                    'url' => $filename,
+                ]);
+            }
+        }
+
+
+        $animal->update($data);
+        return Inertia::render('Dashboard',[
+            'userAnimals' => Animal::where('owner_id',$userId)->get()
+        ]);
     }
 
     public function putDownAnimal ($id) {
