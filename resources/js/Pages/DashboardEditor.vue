@@ -7,47 +7,42 @@
                 The animal's page had been updated
             </div>
             <form @submit.prevent="submitForm" class="space-y-4 flex flex-col">
-                <div>
-                    <label for="name" class="block font-semibold">Name:</label>
+                <div v-for="formInput in providedAnimalFormInputs">
+                    <label :for="formInput.value" class="block font-semibold"
+                        >{{ formInput.label }}:
+                    </label>
+                    <div v-if="formInput.type === 'select'">
+                        <select
+                            v-model="form[formInput.value]"
+                            class="mt-1 p-2 w-full border rounded-md"
+                            required
+                        >
+                            <option
+                                v-for="(option, index) in animalTypesOptions"
+                                :key="index"
+                                :value="option.value"
+                            >
+                                {{ option.label }}
+                            </option>
+                        </select>
+                        <!-- TO DO: Add a button to add a new animal type -->
+                    </div>
                     <input
-                        type="text"
-                        v-model="form.name"
+                        v-else-if="formInput.type === 'file'"
+                        type="file"
+                        @change="handleFileChange"
+                        :class="formInput.class"
+                        multiple
+                    />
+                    <input
+                        v-else
+                        :type="formInput.type"
+                        v-model="form[formInput.value]"
+                        :step="formInput.step ?? formInput.step"
+                        :min="formInput.min ?? formInput.min"
                         class="mt-1 p-2 w-full border rounded-md"
                         required
                     />
-                </div>
-
-                <div>
-                    <label for="price" class="block font-semibold"
-                        >Price:</label
-                    >
-                    <input
-                        type="number"
-                        step="0.01"
-                        v-model="form.price"
-                        class="mt-1 p-2 w-full border rounded-md"
-                        required
-                    />
-                </div>
-                <div>
-                    <label for="age" class="block font-semibold">Age:</label>
-                    <input
-                        type="number"
-                        v-model="form.age"
-                        class="mt-1 p-2 w-full border rounded-md"
-                        required
-                    />
-                </div>
-                <div>
-                    <label for="description" class="block font-semibold"
-                        >Description:</label
-                    >
-                    <textarea
-                        v-model="form.description"
-                        class="mt-1 p-2 w-full border rounded-md"
-                        rows="4"
-                        required
-                    ></textarea>
                 </div>
                 <!-- TO DO: Sink this value with DB received value -->
                 <label for="status" class="flex flex-row">
@@ -86,33 +81,52 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { ref } from "vue";
-interface Animal {
-    images: { url: string; animal_id: number }[];
-    owner_id: number;
-    owner: { name: string; id: number; phone: string };
-    id: number;
-    name: string;
-    age: number;
-    type: string;
-    race: string;
-    price: number;
-    description: string;
-    status: string;
-}
-const props = defineProps<{
-    animal: Animal;
-}>();
+import { PropType, ref } from "vue";
+import { TypeAnimal } from "@/types/animals";
+import { TypeFormInputs } from "@/types/formInputs";
 
+interface FormTypes {
+    [key: string]: string | number;
+}
+
+const props = defineProps({
+    providedAnimalTypes: {
+        type: Array as PropType<string[]>,
+        required: true,
+    },
+    providedAnimalFormInputs: {
+        type: Array as PropType<TypeFormInputs[]>,
+        required: true,
+    },
+    animal: {
+        type: Object as PropType<TypeAnimal>,
+        required: true,
+    },
+});
 const submitted = ref(false);
 
-const form = ref({
+const form = ref<FormTypes>({
     name: props.animal.name,
     age: props.animal.age,
+    type: props.animal.type,
+    race: props.animal.race,
     price: props.animal.price,
     description: props.animal.description,
     status: props.animal.status,
 });
+const files = ref<File[]>([]);
+const animalTypesOptions: Array<{ label: string; value: string }> =
+    props.providedAnimalTypes.map((animal: string) => ({
+        label: animal.charAt(0).toUpperCase() + animal.slice(1),
+        value: animal,
+    }));
+
+const handleFileChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+        files.value = Array.from(target.files);
+    }
+};
 
 const submitForm = () => {
     submitted.value = true;
@@ -121,6 +135,8 @@ const submitForm = () => {
 
     queryParams.append("name", form.value.name);
     queryParams.append("age", form.value.age);
+    queryParams.append("type", form.value.type);
+    queryParams.append("race", form.value.race);
     queryParams.append("description", form.value.description);
     queryParams.append("price", form.value.price);
     queryParams.append(

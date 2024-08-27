@@ -31,7 +31,8 @@ class DashboardController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'status' => 'required|string',
-
+            'type'=> 'required|string',
+            'race'=> 'required|string',
         ]);
 
         $animal->update($data);

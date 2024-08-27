@@ -54,18 +54,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { PropType, ref } from "vue";
+import { TypeFormInputs } from "@/types/formInputs";
 
 interface FormTypes {
     [key: string]: string;
-}
-interface FormInputs {
-    label: string;
-    value: string;
-    type: string;
-    options?: { label: string; value: string }[];
-    min?: string;
-    step?: string;
-    class?: string;
 }
 
 const props = defineProps({
@@ -74,7 +66,7 @@ const props = defineProps({
         required: true,
     },
     providedAnimalFormInputs: {
-        type: Array as PropType<FormInputs[]>,
+        type: Array as PropType<TypeFormInputs[]>,
         required: true,
     },
 });
