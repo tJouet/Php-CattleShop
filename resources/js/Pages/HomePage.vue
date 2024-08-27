@@ -63,7 +63,7 @@
                             <th>Age</th>
                             <th>Price</th>
                             <th>Owner</th>
-                            <th>Contact me</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
