@@ -148,8 +148,8 @@ const selectSortOption = (selectedFilter: string) => {
                     value: "100-200",
                 },
                 {
-                    label: "300-400",
-                    value: "300-400",
+                    label: "200-300",
+                    value: "200-300",
                 },
                 {
                     label: "300-400",
@@ -158,6 +158,10 @@ const selectSortOption = (selectedFilter: string) => {
                 {
                     label: "400-500",
                     value: "400-500",
+                },
+                {
+                    label: "500 +",
+                    value: "500-100000",
                 },
             ];
             break;

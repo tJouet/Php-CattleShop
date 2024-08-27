@@ -44,7 +44,7 @@
                     <img
                         :src="`/storage/images/${image.url}`"
                         :alt="animal.name"
-                        class="w-full h-full object-cover"
+                        class="object-cover"
                     />
                 </slide>
                 <template #addons>
