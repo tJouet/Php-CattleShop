@@ -34,6 +34,14 @@ class AnimalServiceProvider extends ServiceProvider
                 ['label' => 'Price', 'value' => 'price', 'type' => 'number', 'step' => '0.01', 'min' => '0'],
                 ['label' => 'Description', 'value' => 'description', 'type' => 'text'],
                 ['label' => 'Pictures', 'value' => 'images', 'type' => 'file', 'class' => 'file-input w-full max-w-xs'],
+                ['label' => 'Availabilty', 'value' => 'status', 'type' => 'select',],
+            ];
+        });
+
+        Inertia::share('providedAnimalStatus', function () {
+            return [
+                ['label' => 'Available', 'value' => 'available'],
+                ['label' => 'Sold', 'value' => 'sold'],
             ];
         });
     }

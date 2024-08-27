@@ -17,6 +17,7 @@
                             class="mt-1 p-2 w-full border rounded-md"
                             required
                         >
+                            <!-- TO DO: Add a button to add a new animal type -->
                             <option
                                 v-if="formInput.value === 'type'"
                                 v-for="(option, index) in animalTypesOptions"
@@ -25,14 +26,16 @@
                             >
                                 {{ option.label }}
                             </option>
+                            <!-- TO DO: Sink this value with DB received value -->
                             <option
                                 v-else-if="formInput.value === 'status'"
-                                v-for="(option, index) in animalAvailabilty"
-                                :key="option + index"
-                                :value="option"
-                            ></option>
+                                v-for="(option, index) in providedAnimalStatus"
+                                :key="option.label"
+                                :value="option.value"
+                            >
+                                {{ option.label }}
+                            </option>
                         </select>
-                        <!-- TO DO: Add a button to add a new animal type -->
                     </div>
                     <input
                         v-else-if="formInput.type === 'file'"
@@ -51,20 +54,7 @@
                         required
                     />
                 </div>
-                <!-- TO DO: Sink this value with DB received value -->
-                <label for="status" class="flex flex-row">
-                    Availability:
-                    <input
-                        type="checkbox"
-                        class="mx-6"
-                        v-model="form.status"
-                        :checked="props.animal.status === 'available'"
-                    />
-                    <p v-if="form.status === 'available'">
-                        This animal is available for purchase
-                    </p>
-                    <p v-else>This animal is not available for purchase</p>
-                </label>
+
                 <!-- TO DO: Add ways to upload a picture -->
                 <div class="flex flex-row">
                     <button
@@ -91,6 +81,7 @@ import { Head, router } from "@inertiajs/vue3";
 import { PropType, ref } from "vue";
 import { TypeAnimal } from "@/types/animals";
 import { TypeFormInputs } from "@/types/formInputs";
+import { AnimalStatus } from "@/types/animalStatus";
 
 interface FormTypes {
     [key: string]: string | number | boolean;
@@ -103,6 +94,10 @@ const props = defineProps({
     },
     providedAnimalFormInputs: {
         type: Array as PropType<TypeFormInputs[]>,
+        required: true,
+    },
+    providedAnimalStatus: {
+        type: Array as PropType<AnimalStatus[]>,
         required: true,
     },
     animal: {
@@ -141,14 +136,11 @@ const handleFileChange = (event: Event) => {
 const submitForm = () => {
     submitted.value = true;
     const formData = new FormData();
+
     formData.append("_method", "PATCH");
     Object.keys(form.value).forEach((key) => {
         formData.append(key, form.value[key].toString());
     });
-    formData.append(
-        "status",
-        form.value.status === true ? "available" : "sold"
-    );
 
     files.value.forEach((file) => {
         formData.append("images[]", file);
