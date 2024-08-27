@@ -3,7 +3,7 @@
         <div class="container mx-auto mt-6">
             <h2 class="text-2xl font-bold mb-4">Creation form</h2>
             <form @submit.prevent="submitForm" class="space-y-4 flex flex-col">
-                <div v-for="formInput in formInputs">
+                <div v-for="formInput in providedAnimalFormInputs">
                     <label :for="formInput.value" class="block font-semibold"
                         >{{ formInput.label }}:
                     </label>
@@ -14,7 +14,7 @@
                             required
                         >
                             <option
-                                v-for="(option, index) in formInput.options"
+                                v-for="(option, index) in animalTypesOptions"
                                 :key="index"
                                 :value="option.value"
                             >
@@ -58,10 +58,23 @@ import { PropType, ref } from "vue";
 interface FormTypes {
     [key: string]: string;
 }
+interface FormInputs {
+    label: string;
+    value: string;
+    type: string;
+    options?: { label: string; value: string }[];
+    min?: string;
+    step?: string;
+    class?: string;
+}
 
 const props = defineProps({
-    animalTypes: {
+    providedAnimalTypes: {
         type: Array as PropType<string[]>,
+        required: true,
+    },
+    providedAnimalFormInputs: {
+        type: Array as PropType<FormInputs[]>,
         required: true,
     },
 });
@@ -78,30 +91,10 @@ const form = ref<FormTypes>({
 const files = ref<File[]>([]);
 
 const animalTypesOptions: Array<{ label: string; value: string }> =
-    props.animalTypes.map((animal: string) => ({
+    props.providedAnimalTypes.map((animal: string) => ({
         label: animal.charAt(0).toUpperCase() + animal.slice(1),
         value: animal,
     }));
-
-const formInputs = [
-    { label: "Name", value: "name", type: "text" },
-    {
-        label: "Type",
-        value: "type",
-        type: "select",
-        options: animalTypesOptions,
-    },
-    { label: "Race", value: "race", type: "text" },
-    { label: "Age", value: "age", type: "number", min: "1" },
-    { label: "Price", value: "price", type: "number", step: "0.01", min: "0" },
-    { label: "Description", value: "description", type: "text" },
-    {
-        label: "Pictures",
-        value: "images",
-        type: "file",
-        class: "file-input w-full max-w-xs",
-    },
-];
 
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -111,7 +104,6 @@ const handleFileChange = (event: Event) => {
 };
 
 const submitForm = async () => {
-    console.log(form.value);
     const formData = new FormData();
 
     Object.keys(form.value).forEach((key) => {

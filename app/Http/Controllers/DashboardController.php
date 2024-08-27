@@ -46,10 +46,7 @@ class DashboardController extends Controller
     }
 
     public function displayCreateForm () {
-        $animalTypes = collect(AnimalType::cases())->map(fn($type) => $type->value);
-        return Inertia::render('DashboardCreate',[
-            "animalTypes" => $animalTypes
-        ]);
+        return Inertia::render('DashboardCreate',[]);
     }
     public function createAnimal (Request $request) {
         $userId = $request->user()->id;
