@@ -5,7 +5,6 @@
 # Simple crud app
 
  This app was realised to pass a technical test. On the base of a family owned farm market, it allows its visitors to browse a list of animals for sale as well as filtering them. As a user you can login and edit your animals.
-This is a V1. More adjustements will be added soon.
 
 ## Used technologies:
 
